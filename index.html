@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAT RUSH - Aventura Matemática</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+        }
+
+        /* TELA INICIAL COM A SUA IMAGEM DE FUNDO */
+        #tela-inicial {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('fundo-inicio.png') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #tela-inicial::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.25);
+            z-index: 1;
+        }
+
+        .conteudo-inicio {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            max-width: 700px;
+            padding: 20px;
+        }
+
+        /* LOGO / TÍTULO */
+        .logo-container {
+            margin-bottom: 15px;
+            text-shadow: 4px 4px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000, 0px 5px 15px rgba(0,0,0,0.8);
+        }
+
+        .titulo-mat {
+            font-size: 5rem;
+            font-weight: 900;
+            color: #ffcc00;
+            line-height: 0.85;
+            letter-spacing: 2px;
+        }
+
+        .titulo-rush {
+            font-size: 5rem;
+            font-weight: 900;
+            color: #00d2ff;
+            line-height: 1;
+            letter-spacing: 2px;
+        }
+
+        .subtitulo-jogo {
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 6px 20px;
+            border-radius: 6px;
+            border: 2px solid #00d2ff;
+            margin-bottom: 35px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        /* BOTÃO JOGAR ESTILO ARCADE */
+        #btn-jogar {
+            background: linear-gradient(to bottom, #22c55e, #15803d);
+            color: #ffffff;
+            font-size: 2rem;
+            font-weight: bold;
+            padding: 15px 50px;
+            border: 4px solid #14532d;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0px 8px 0px #052e16, 0px 15px 20px rgba(0,0,0,0.5);
+            transition: all 0.1s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 0px #000;
+        }
+
+        #btn-jogar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0px 11px 0px #052e16, 0px 18px 25px rgba(0,0,0,0.6);
+        }
+
+        #btn-jogar:active {
+            transform: translateY(4px);
+            box-shadow: 0px 4px 0px #052e16, 0px 8px 10px rgba(0,0,0,0.5);
+        }
+
+        /* CAIXA DO DESENVOLVEDOR */
+        .dev-box {
+            background: rgba(15, 23, 42, 0.9);
+            border: 3px solid #3b82f6;
+            padding: 8px 25px;
+            border-radius: 8px;
+            color: #f8fafc;
+            font-size: 0.95rem;
+            font-weight: bold;
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.6);
+            letter-spacing: 1px;
+        }
+
+        .dev-box span {
+            color: #facc15;
+        }
+
+        /* TELA DO JOGO (HUD E CANVAS) */
+        #tela-jogo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .hud {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .hud-item {
+            background: rgba(15, 23, 42, 0.85);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: 2px solid #38bdf8;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        /* MODAL DE PERGUNTAS */
+        #modal-desafio {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.75);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-conteudo {
+            background: #0f172a;
+            border: 3px solid #38bdf8;
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 550px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+        }
+
+        .modal-conteudo h2 {
+            color: #38bdf8;
+            margin-bottom: 15px;
+        }
+
+        .modal-conteudo p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .modal-conteudo input {
+            width: 80%;
+            padding: 12px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: 2px solid #475569;
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        .modal-conteudo input:focus {
+            border-color: #38bdf8;
+        }
+
+        .botoes-modal {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn-modal {
+            padding: 10px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        #btn-responder {
+            background: #22c55e;
+            color: white;
+        }
+
+        #btn-fechar {
+            background: #ef4444;
+            color: white;
+        }
+
+        #mensagem-feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 24px;
+        }
+
+        .escondido {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TELA INICIAL PERSONALIZADA -->
+    <div id="tela-inicial">
+        <div class="conteudo-inicio">
+            <div class="logo-container">
+                <div class="titulo-mat">MAT</div>
+                <div class="titulo-rush">RUSH</div>
+            </div>
+            
+            <div class="subtitulo-jogo">Aventura Matemática • CIEP Marlene Abib</div>
+
+            <button id="btn-jogar">
+                ▶ JOGAR
+            </button>
+
+            <div class="dev-box">
+                DESENVOLVEDOR: <span>ADRYELL</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- TELA DO JOGO -->
+    <div id="tela-jogo" class="escondido">
+        <div class="hud">
+            <div class="hud-item">Pontos: <span id="pontuacao">0</span></div>
+            <div class="hud-item">Vidas: <span id="vidas">❤️❤️❤️</span></div>
+        </div>
+        <canvas id="canvas-jogo"></canvas>
+    </div>
+
+    <!-- MODAL DE DESAFIO MATEMÁTICO -->
+    <div id="modal-desafio" class="escondido">
+        <div class="modal-conteudo">
+            <h2 id="titulo-comercio">DESAFIO</h2>
+            <p id="enunciado-conta">Carregando pergunta...</p>
+            <input type="number" id="resposta-jogador" placeholder="Digite sua resposta" step="any">
+            <div class="botoes-modal">
+                <button id="btn-responder" class="btn-modal">Responder</button>
+                <button id="btn-fechar" class="btn-modal">Sair</button>
+            </div>
+            <div id="mensagem-feedback"></div>
+        </div>
+    </div>
+
+    <!-- Script principal do jogo -->
+    <script src="script.js"></script>
+</body>
+</html>
