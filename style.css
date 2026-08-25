@@ -4,66 +4,73 @@
     box-sizing: border-box;
 }
 
-body {
+body, html {
     background-color: #0f172a;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    overflow: hidden;
 }
 
 .escondido {
     display: none !important;
 }
 
-/* Container Principal do Jogo */
+/* ========================================================================= */
+/* 🎮 ESTRUTURA DO JOGO E CANVAS TELA CHEIA                                  */
+/* ========================================================================= */
 #tela-jogo {
     position: relative;
-    width: 800px;
-    height: 600px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#canvas-jogo {
+    width: 100vw;
+    height: 100vh;
+    background-color: #15803d;
+    display: block;
+    object-fit: contain;
 }
 
 #hud {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
+    top: 15px;
+    left: 15px;
+    right: 15px;
     display: flex;
     justify-content: space-between;
     background: rgba(15, 23, 42, 0.85);
     border: 2px solid #38bdf8;
-    border-radius: 8px;
-    padding: 10px 20px;
+    border-radius: 10px;
+    padding: 12px 24px;
     color: white;
     font-weight: bold;
     font-size: 18px;
     z-index: 10;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 
-#canvas-jogo {
-    width: 800px;
-    height: 600px;
-    background-color: #15803d;
-    border: 3px solid #38bdf8;
-    border-radius: 8px;
-    display: block;
-}
-
-/* Modal Centralizado por Cima do Canvas */
+/* ========================================================================= */
+/* 💬 MODAL DE DESAFIO CENTRALIZADO                                          */
+/* ========================================================================= */
 #modal-desafio {
     position: absolute;
     top: 0;
     left: 0;
-    width: 800px;
-    height: 600px;
+    width: 100vw;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.75);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 50;
-    border-radius: 8px;
 }
 
 .modal-conteudo {
@@ -73,7 +80,8 @@ body {
     border: 2px solid #38bdf8;
     color: white;
     text-align: center;
-    width: 320px;
+    width: 340px;
+    max-width: 90%;
     box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
 
@@ -97,6 +105,8 @@ body {
     font-size: 16px;
     text-align: center;
     outline: none;
+    background: #0f172a;
+    color: #ffffff;
 }
 
 #mensagem-feedback {
@@ -116,27 +126,9 @@ body {
 }
 
 #btn-responder { background: #22c55e; color: white; }
-#btn-fechar { background: #ef4444; color: white; }body, html {
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden; /* Remove as barras de rolagem */
-}
+#btn-fechar { background: #ef4444; color: white; }
 
-#tela-jogo {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#canvas-jogo {
-    width: 100vw;
-    height: 100vh;
-    object-fit: contain; /* Mantém a proporção sem deformar o jogo */
-}/* ========================================================================= */
+/* ========================================================================= */
 /* 🎨 ESTILO DA TELA INICIAL                                                 */
 /* ========================================================================= */
 #tela-inicial {
@@ -150,13 +142,12 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .painel-inicio {
     text-align: center;
     background: rgba(15, 23, 42, 0.85);
-    padding: 50px 70px;
+    padding: 40px 60px;
     border-radius: 20px;
     border: 2px solid #38bdf8;
     box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
@@ -165,7 +156,7 @@ body {
 }
 
 #tela-inicial h1 {
-    font-size: 4rem;
+    font-size: 3.5rem;
     color: #38bdf8;
     margin: 0 0 10px 0;
     letter-spacing: 3px;
@@ -175,8 +166,28 @@ body {
 .subtitulo {
     color: #e2e8f0;
     font-size: 1.2rem;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     font-weight: 500;
+}
+
+/* Bloco de Créditos (Desenvolvedor / Colaborador) */
+.creditos {
+    margin-bottom: 25px;
+    padding: 8px 15px;
+    background: rgba(30, 41, 59, 0.6);
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.creditos p {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    margin: 3px 0;
+    font-weight: 600;
+}
+
+.creditos span {
+    color: #38bdf8;
 }
 
 .instrucoes-rapidas {
@@ -184,7 +195,7 @@ body {
     padding: 15px 20px;
     border-radius: 10px;
     border-left: 4px solid #f59e0b;
-    margin-bottom: 35px;
+    margin-bottom: 30px;
     text-align: left;
 }
 
