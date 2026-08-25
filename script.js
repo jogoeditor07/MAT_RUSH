@@ -78,6 +78,7 @@ let desafioAtual = null;
 let comercioAtualCategoria = null;
 let jogoPausado = false;
 let comercioProximo = null;
+let loopIniciado = false;
 
 // Mapa ajustado para 1800x1350
 const mundo = { largura: 1800, altura: 1350 };
@@ -142,10 +143,20 @@ const elementosCidadaos = {
     ]
 };
 
-btnJogar?.addEventListener('click', () => {
-    telaInicial.style.display = 'none';
-    telaJogo.classList.remove('escondido');
-    loopJogo();
+function iniciarJogo() {
+    if (telaInicial) telaInicial.style.display = 'none';
+    if (telaJogo) telaJogo.classList.remove('escondido');
+    redimensionarCanvas();
+    if (!loopIniciado) {
+        loopIniciado = true;
+        loopJogo();
+    }
+}
+
+btnJogar?.addEventListener('click', iniciarJogo);
+btnJogar?.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    iniciarJogo();
 });
 
 window.addEventListener('keydown', (e) => {
@@ -161,6 +172,43 @@ window.addEventListener('keyup', (e) => {
     const tecla = e.key.length === 1 ? e.key.toLowerCase() : e.key;
     if (teclas.hasOwnProperty(tecla)) teclas[tecla] = false;
 });
+
+// =========================================================================
+// 📱 CONTROLES TOUCH OTIMIZADOS PARA MOBILE
+// =========================================================================
+const botoesTouch = {
+    'btn-cima': 'ArrowUp',
+    'btn-baixo': 'ArrowDown',
+    'btn-esquerda': 'ArrowLeft',
+    'btn-direita': 'ArrowRight'
+};
+
+Object.keys(botoesTouch).forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) {
+        const ativar = (e) => {
+            if (e.cancelable) e.preventDefault();
+            teclas[botoesTouch[id]] = true;
+        };
+        const desativar = (e) => {
+            if (e.cancelable) e.preventDefault();
+            teclas[botoesTouch[id]] = false;
+        };
+
+        btn.addEventListener('touchstart', ativar, { passive: false });
+        btn.addEventListener('touchend', desativar, { passive: false });
+        btn.addEventListener('touchcancel', desativar, { passive: false });
+
+        btn.addEventListener('mousedown', () => { teclas[botoesTouch[id]] = true; });
+        btn.addEventListener('mouseup', () => { teclas[botoesTouch[id]] = false; });
+    }
+});
+
+canvas.addEventListener('touchstart', (e) => {
+    if (comercioProximo && !jogoPausado) {
+        abrirDesafio(comercioProximo);
+    }
+}, { passive: true });
 
 // =========================================================================
 // 🧱 SISTEMA DE COLISÃO E MOVIMENTAÇÃO
@@ -285,18 +333,15 @@ function atualizarVidas() {
 }
 
 function desenharMapaUrbano() {
-    // Gramado de Fundo
     ctx.fillStyle = '#15803d';
     ctx.fillRect(0, 0, mundo.largura, mundo.altura);
 
-    // Asfalto das Avenidas
     ctx.fillStyle = '#334155';
     ctx.fillRect(0, 420, mundo.largura, 100);
     ctx.fillRect(0, 830, mundo.largura, 100);
     ctx.fillRect(570, 0, 100, mundo.altura);
     ctx.fillRect(1130, 0, 100, mundo.altura);
 
-    // Calçadas das Avenidas
     ctx.fillStyle = '#94a3b8';
     ctx.fillRect(0, 405, mundo.largura, 15);
     ctx.fillRect(0, 520, mundo.largura, 15);
@@ -307,7 +352,6 @@ function desenharMapaUrbano() {
     ctx.fillRect(1115, 0, 15, mundo.altura);
     ctx.fillRect(1230, 0, 15, mundo.altura);
 
-    // Faixas de Pedestre
     ctx.fillStyle = '#ffffff';
     const esquinasX = [570, 1130];
     const esquinasY = [420, 830];
@@ -323,7 +367,6 @@ function desenharMapaUrbano() {
         });
     });
 
-    // Linhas Amarelas Tracejadas
     ctx.fillStyle = '#facc15';
     for (let x = 0; x < mundo.largura; x += 55) {
         if ((x < 555 || x > 670) && (x < 1115 || x > 1230)) {
@@ -338,7 +381,6 @@ function desenharMapaUrbano() {
         }
     }
 
-    // Quadras / Blocos de Edifícios
     const posicoesBlocos = [
         {x: 50, y: 40, w: 505, h: 365}, {x: 685, y: 40, w: 430, h: 365}, {x: 1245, y: 40, w: 505, h: 365},
         {x: 50, y: 535, w: 505, h: 280}, {x: 685, y: 535, w: 430, h: 280}, {x: 1245, y: 535, w: 505, h: 280},
@@ -352,7 +394,6 @@ function desenharMapaUrbano() {
         ctx.fillRect(b.x + 8, b.y + 8, b.w - 16, b.h - 16);
     });
 
-    // Decorativos do Mapa (Carros, Bancos, Lixeiras no chão)
     elementosCidadaos.carros.forEach(c => {
         ctx.fillStyle = c.cor;
         if (c.dir === 'H') {
@@ -379,21 +420,15 @@ function desenharMapaUrbano() {
     });
 }
 
-// =========================================================================
-// 🌳 DESENHO 2.5D DE ÁRVORES E POSTES (ESTILO RETRO RPG)
-// =========================================================================
 function desenharArvore25D(a) {
-    // Sombra no chão
     ctx.fillStyle = 'rgba(0,0,0,0.25)';
     ctx.beginPath();
     ctx.ellipse(a.x, a.y + 2, 14, 6, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    // Tronco Vertical
     ctx.fillStyle = '#78350f';
     ctx.fillRect(a.x - 4, a.y - 14, 8, 16);
 
-    // Copa da Árvore (Volume 2.5D)
     ctx.fillStyle = '#14532d';
     ctx.beginPath();
     ctx.arc(a.x, a.y - 24, 18, 0, Math.PI * 2);
@@ -406,129 +441,28 @@ function desenharArvore25D(a) {
 }
 
 function desenharPoste25D(p) {
-    // Sombra da base do poste
     ctx.fillStyle = 'rgba(0,0,0,0.2)';
     ctx.beginPath();
     ctx.arc(p.x, p.y + 2, 5, 0, Math.PI * 2);
     ctx.fill();
 
-    // Haste vertical do poste (comprida para cima)
     ctx.fillStyle = '#475569';
     ctx.fillRect(p.x - 2, p.y - 28, 4, 30);
 
-    // Luminária no topo
     ctx.fillStyle = '#1e293b';
     ctx.fillRect(p.x - 6, p.y - 32, 12, 6);
 
-    // Brilho/Luz amarela
     ctx.fillStyle = '#fef08a';
     ctx.beginPath();
     ctx.arc(p.x, p.y - 29, 3, 0, Math.PI * 2);
     ctx.fill();
 
-    // Efeito de luz ao redor no chão
     ctx.fillStyle = '#fef08a';
     ctx.beginPath();
     ctx.arc(p.x, p.y, 14, 0, Math.PI * 2);
     ctx.globalAlpha = 0.25;
     ctx.fill();
     ctx.globalAlpha = 1.0;
-}
-
-function desenharComercios() {
-    comercios.forEach(loja => {
-        ctx.fillStyle = '#cbd5e1';
-        ctx.fillRect(loja.x - 12, loja.y - 12, loja.largura + 24, loja.altura + 90);
-
-        ctx.strokeStyle = '#94a3b8';
-        ctx.lineWidth = 1;
-        for (let px = loja.x - 12; px < loja.x + loja.largura + 12; px += 28) {
-            ctx.beginPath();
-            ctx.moveTo(px, loja.y + loja.altura);
-            ctx.lineTo(px, loja.y + loja.altura + 90);
-            ctx.stroke();
-        }
-
-        ctx.fillStyle = loja.corParede;
-        ctx.fillRect(loja.x, loja.y, loja.largura, loja.altura);
-
-        ctx.fillStyle = loja.corTelhado;
-        ctx.fillRect(loja.x + 10, loja.y + 10, loja.largura - 20, loja.altura - 38);
-
-        ctx.fillStyle = '#475569';
-        ctx.fillRect(loja.x + 25, loja.y + 22, 30, 22);
-        ctx.fillRect(loja.x + loja.largura - 55, loja.y + 22, 30, 22);
-
-        ctx.fillStyle = '#38bdf8';
-        ctx.globalAlpha = 0.7;
-        ctx.fillRect(loja.x + 18, loja.y + loja.altura - 24, 50, 18);
-        ctx.fillRect(loja.x + loja.largura - 68, loja.y + loja.altura - 24, 50, 18);
-        ctx.globalAlpha = 1.0;
-
-        ctx.fillStyle = '#1e293b';
-        ctx.fillRect(loja.x + loja.largura / 2 - 18, loja.y + loja.altura - 24, 36, 24);
-
-        ctx.fillStyle = loja.corPlaca;
-        ctx.fillRect(loja.x + 10, loja.y + loja.altura - 46, loja.largura - 20, 20);
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1.5;
-        ctx.strokeRect(loja.x + 10, loja.y + loja.altura - 46, loja.largura - 20, 20);
-
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 12px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(`${loja.icone} ${loja.nome}`, loja.x + loja.largura / 2, loja.y + loja.altura - 35);
-
-        ctx.fillStyle = loja.corToldo;
-        ctx.fillRect(loja.x + 5, loja.y + loja.altura - 5, loja.largura - 10, 7);
-
-        const t = loja.terminal;
-        const eProximo = (comercioProximo && comercioProximo.id === loja.id);
-
-        if (eProximo) {
-            ctx.shadowColor = '#38bdf8';
-            ctx.shadowBlur = 12;
-            ctx.strokeStyle = '#38bdf8';
-            ctx.lineWidth = 2.5;
-            ctx.strokeRect(t.x - 3, t.y - 3, t.largura + 6, t.altura + 6);
-        }
-
-        ctx.fillStyle = '#0f172a';
-        ctx.fillRect(t.x, t.y, t.largura, t.altura);
-        
-        ctx.strokeStyle = '#f59e0b';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(t.x, t.y, t.largura, t.altura);
-
-        ctx.fillStyle = '#0284c7';
-        ctx.fillRect(t.x + 4, t.y + 4, t.largura - 8, 14);
-
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 11px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('?', t.x + t.largura / 2, t.y + 12);
-
-        ctx.fillStyle = eProximo ? '#22c55e' : '#f59e0b';
-        ctx.beginPath();
-        ctx.arc(t.x + t.largura / 2, t.y - 3, 3, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.shadowBlur = 0;
-
-        if (eProximo) {
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
-            ctx.fillRect(t.x - 60, t.y - 32, 160, 20);
-            ctx.strokeStyle = '#38bdf8';
-            ctx.lineWidth = 1;
-            ctx.strokeRect(t.x - 60, t.y - 32, 160, 20);
-
-            ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 9px sans-serif';
-            ctx.fillText('PRESSIONE [E] PARA DESAFIAR', t.x + 20, t.y - 22);
-        }
-    });
 }
 
 function desenharJogador() {
@@ -559,7 +493,7 @@ function desenharJogador() {
 }
 
 // =========================================================================
-// 🔄 LOOP DO JOGO COM ORDENAÇÃO DE CAMADAS (Y-SORTING)
+// 🔄 LOOP DO JOGO
 // =========================================================================
 function loopJogo() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -570,16 +504,12 @@ function loopJogo() {
     ctx.save();
     ctx.translate(-camera.x, -camera.y);
 
-    // 1. Desenha o mapa base de fundo (ruas e gramas planas)
     desenharMapaUrbano();
 
-    // 2. Cria uma lista de elementos verticais para ordenar por profundidade (Y-Sorting)
     let elementosVisuais = [];
 
-    // Adiciona os comércios
     comercios.forEach(loja => {
         elementosVisuais.push({ y: loja.y + loja.altura, desenhar: () => {
-            // Desenha a calçada e a estrutura da loja
             ctx.fillStyle = '#cbd5e1';
             ctx.fillRect(loja.x - 12, loja.y - 12, loja.largura + 24, loja.altura + 90);
             
@@ -669,35 +599,26 @@ function loopJogo() {
 
                 ctx.fillStyle = '#ffffff';
                 ctx.font = 'bold 9px sans-serif';
-                ctx.fillText('PRESSIONE [E] PARA DESAFIAR', t.x + 20, t.y - 22);
+                const msg = ('ontouchstart' in window) ? 'TOQUE AQUI PARA DESAFIAR' : 'PRESSIONE [E] PARA DESAFIAR';
+                ctx.fillText(msg, t.x + 20, t.y - 22);
             }
         }});
     });
 
-    // Adiciona as Árvores 2.5D
     elementosCidadaos.arvores.forEach(a => {
         elementosVisuais.push({ y: a.y, desenhar: () => desenharArvore25D(a) });
     });
 
-    // Adiciona os Postes 2.5D
     elementosCidadaos.postes.forEach(p => {
         elementosVisuais.push({ y: p.y, desenhar: () => desenharPoste25D(p) });
     });
 
-    // Adiciona o Jogador
     elementosVisuais.push({ y: jogador.y + jogador.altura, desenhar: () => desenharJogador() });
 
-    // Ordena do mais distante (y menor) para o mais próximo (y maior)
     elementosVisuais.sort((el1, el2) => el1.y - el2.y);
-
-    // Desenha cada elemento na ordem correta de profundidade
     elementosVisuais.forEach(el => el.desenhar());
 
     ctx.restore();
 
     requestAnimationFrame(loopJogo);
-}
-
-if (telaInicial && window.getComputedStyle(telaInicial).display === 'none') {
-    loopJogo();
 }

@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MAT RUSH - Aventura Matemática</title>
     <style>
         * {
@@ -17,6 +17,9 @@
             overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #0f172a;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         /* TELA INICIAL COM A SUA IMAGEM DE FUNDO */
@@ -174,6 +177,43 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
 
+        /* CONTROLES TOUCH (D-PAD MOBILE SUBIDO) */
+        #controles-touch {
+            position: absolute;
+            bottom: 85px; /* Subido para evitar sobreposição com barras e gestos do sistema */
+            left: 20px;
+            width: 150px;
+            height: 150px;
+            z-index: 20;
+        }
+
+        .btn-dpad {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 2px solid #38bdf8;
+            color: white;
+            font-size: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+            touch-action: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .btn-dpad:active {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        #btn-cima { top: 0; left: 51px; }
+        #btn-baixo { bottom: 0; left: 51px; }
+        #btn-esquerda { top: 51px; left: 0; }
+        #btn-direita { top: 51px; right: 0; }
+
         /* MODAL DE PERGUNTAS */
         #modal-desafio {
             position: fixed;
@@ -294,6 +334,14 @@
             <div class="hud-item">Vidas: <span id="vidas">❤️❤️❤️</span></div>
         </div>
         <canvas id="canvas-jogo"></canvas>
+
+        <!-- BOTÕES VIRTUAIS DO CELULAR (D-PAD) -->
+        <div id="controles-touch">
+            <button id="btn-cima" class="btn-dpad">▲</button>
+            <button id="btn-esquerda" class="btn-dpad">◀</button>
+            <button id="btn-direita" class="btn-dpad">▶</button>
+            <button id="btn-baixo" class="btn-dpad">▼</button>
+        </div>
     </div>
 
     <!-- MODAL DE DESAFIO MATEMÁTICO -->

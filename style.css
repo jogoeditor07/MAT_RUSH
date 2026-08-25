@@ -13,6 +13,9 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .escondido {
@@ -56,6 +59,45 @@ body, html {
     z-index: 10;
     box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
+
+/* ========================================================================= */
+/* 📱 CONTROLES TOUCH (D-PAD MOBILE SUBIDO)                                  */
+/* ========================================================================= */
+#controles-touch {
+    position: fixed;
+    bottom: 85px; /* Subido para não conflitar com gestos ou barras de navegação */
+    left: 20px;
+    width: 130px;
+    height: 130px;
+    z-index: 999;
+}
+
+.btn-dpad {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 2px solid #38bdf8;
+    color: white;
+    font-size: 18px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    touch-action: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.btn-dpad:active {
+    background: #38bdf8;
+    color: #0f172a;
+}
+
+#btn-cima { top: 0; left: 44px; }
+#btn-baixo { bottom: 0; left: 44px; }
+#btn-esquerda { top: 44px; left: 0; }
+#btn-direita { top: 44px; right: 0; }
 
 /* ========================================================================= */
 /* 💬 MODAL DE DESAFIO CENTRALIZADO                                          */
