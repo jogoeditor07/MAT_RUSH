@@ -26,51 +26,41 @@ const btnFechar = document.getElementById('btn-fechar');
 const mensagemFeedback = document.getElementById('mensagem-feedback');
 
 // =========================================================================
-// 🎯 BANCO DE PERGUNTAS (NÍVEL MAIS DESAFIADOR - CIEP MARLENE ABIB)
+// 🎯 BANCO DE PERGUNTAS ORGANIZADO POR COMÉRCIO
 // =========================================================================
 const BANCO_DE_PERGUNTAS = {
-    adicao: [
-        { pergunta: "[1/5] O CIEP organizou uma campanha de arrecadação de alimentos em 3 etapas. Na 1ª etapa foram 485 kg, na 2ª foram 672 kg e na 3ª foram 543 kg. Qual o total arrecadado?", resposta: 1700 },
-        { pergunta: "[2/5] Na biblioteca, o acervo antigo era de 1.250 livros. No trimestre passado chegaram 485 novos e, neste mês, mais 315. Quantos livros há agora?", resposta: 2050 },
-        { pergunta: "[3/5] No festival cultural, o turno da manhã gerou R$ 1.340,00, o da tarde R$ 1.890,00 e a noite R$ 1.270,00 em doações. Quanto foi o total?", resposta: 4500 },
-        { pergunta: "[4/5] Para a reforma do laboratório, foram comprados 850 parafusos grandes, 625 médios e 525 pequenos. Quantos parafusos foram comprados ao todo?", resposta: 2000 },
-        { pergunta: "[5/5] A escola gastou 1.450 litros de água na segunda-feira, 1.820 na terça e 1.730 na quarta. Qual foi o consumo total nesses três dias?", resposta: 5000 }
+    mercado: [
+        { pergunta: "[1/3] Maria foi ao mercado e comprou uma cesta de frutas que custava R$ 80,00. Ao chegar à caixa, viu um cartaz informando que todas as frutas vinham com 15% de desconto. Qual foi o valor do desconto em reais?", resposta: 12 },
+        { pergunta: "[2/3] João foi ao mercado e comprou 2 kg de arroz por R$ 5,00 cada quilo e 1 kg de feijão por R$ 8,00. Ele pagou a compra com uma nota de R$ 50,00. Quanto João recebeu de troco?", resposta: 32 },
+        { pergunta: "[3/3] Uma caixa de bombons custa R$ 40,00 no mercado. O gerente anunciou uma promoção dando 10% de desconto para quem pagar no Pix. Qual será o valor pago pela caixa de bombons com esse desconto?", resposta: 36 }
     ],
 
-    subtracao: [
-        { pergunta: "[1/5] O estoque central do CIEP tinha 3.500 folhas de EVA. Os professores usaram 1.425 para os projetos e 875 para murais. Quantas folhas sobraram?", resposta: 1200 },
-        { pergunta: "[2/5] Uma verba de R$ 5.000,00 foi destinada à escola. Foram gastos R$ 1.850,00 com material esportivo e R$ 2.150,00 com livros. Quanto sobrou?", resposta: 1000 },
-        { pergunta: "[3/5] O marcador de energia do CIEP indicava 8.420 kWh no início do mês e fechou em 6.950 kWh consumidos? (Calcule a diferença: 8420 - 3250).", resposta: 5170 },
-        { pergunta: "[4/5] Havia 2.400 senhas para a gincana escolar. No primeiro dia foram distribuídas 980 e no segundo dia 845. Quantas senhas ainda restam?", resposta: 575 },
-        { pergunta: "[5/5] Um total de 1.500 alunos participou da seletiva de atletismo, mas 634 foram eliminados na primeira fase e 416 na segunda. Quantos continuam?", resposta: 450 }
+    roupas: [
+        { pergunta: "[1/3] Uma pessoa foi a uma loja de roupas e comprou uma camiseta por R$ 40,00 e uma calça por R$ 80,00. Na hora do pagamento, a caixa aplicou um desconto fixo de R$ 10,00 no valor total. A pessoa pagou a compra com duas notas de R$ 100,00. Quanto ela recebeu de troco?", resposta: 90 },
+        { pergunta: "[2/3] Uma pessoa comprou um casaco por R$ 90,00 e um par de meias por R$ 10,00 em uma loja de roupas. A caixa deu um desconto fixo de R$ 15,00 no valor total da compra. Se o cliente pagou com uma nota de R$ 100,00, quanto recebeu de troco?", resposta: 15 },
+        { pergunta: "[3/3] Lucas comprou duas camisetas de R$ 30,00 cada uma. Ao passar na caixa da loja, ele apresentou um cupom que dava R$ 10,00 de desconto no total da compra. Lucas pagou com uma nota de R$ 50,00 e uma nota de R$ 20,00. Quanto ele recebeu de troco?", resposta: 20 }
     ],
 
-    multiplicacao: [
-        { pergunta: "[1/5] O CIEP comprou 24 caixas de giz de cera. Cada caixa contém 48 unidades. Quantas unidades de giz de cera foram compradas no total?", resposta: 1152 },
-        { pergunta: "[2/5] Um evento reuniu 35 turmas, e cada turma arrecadou exatamente 64 kg de alimentos para a caridade. Quantos quilos foram arrecadados?", resposta: 2240 },
-        { pergunta: "[3/5] O refeitório serve refeições em mesas de 12 lugares. Se há 45 mesas lotadas em dois turnos (considere 45 x 18), quantas refeições foram?", resposta: 810 },
-        { pergunta: "[4/5] Para a festa junina, foram encomendados 78 pacotes com 35 bandeirinhas em cada um. Quantas bandeirinhas vieram ao todo?", resposta: 2730 },
-        { pergunta: "[5/5] Uma biblioteca escolar possui 54 estantes, e cada estante tem capacidade para 85 livros organizados. Quantos livros cabem no máximo?", resposta: 4590 }
+    padaria: [
+        { pergunta: "[1/3] Um cliente foi à padaria e comprou uma bandeja de pães por R$ 12,00 e um bolo por R$ 18,00. Por ser final de tarde, a padaria ofereceu um desconto fixo de R$ 5,00 no total da compra. O cliente pagou a conta entregando uma nota de R$ 50,00. Quanto ele recebeu de troco?", resposta: 25 },
+        { pergunta: "[2/3] Mariana comprou uma torta salgada de R$ 40,00 e dois sucos naturais de R$ 10,00 cada. Por pagar via Pix, a padaria concede um desconto de 10% sobre o valor total do pedido. Se ela pagou em dinheiro entregando uma nota de R$ 100,00 na caixa, quanto deve receber de troco?", resposta: 40 },
+        { pergunta: "[3/3] Um cliente comprou 10 pães franceses que custavam R$ 1,00 cada e 2 cafés expressos de R$ 5,00 cada. Ao pagar, ele utilizou um cupom de fidelidade da padaria que concede 20% de desconto no valor total dos pães. Sabendo que o cliente pagou a compra com uma nota de R$ 50,00, qual foi o valor do troco recebido?", resposta: 32 }
     ],
 
-    divisao: [
-        { pergunta: "[1/5] A prefeitura enviou 2.880 cadernos para serem distribuídos igualmente entre as 24 turmas do CIEP. Quantos cadernos cada turma recebeu?", resposta: 120 },
-        { pergunta: "[2/5] Um total de R$ 3.360,00 obtido em doações foi dividido igualmente entre 14 projetos pedagógicos da escola. Quanto recebeu cada projeto?", resposta: 240 },
-        { pergunta: "[3/5] A horta do CIEP produziu 1.440 morangos e os empacotou em bandejas com 18 unidades cada. Quantas bandejas foram formadas?", resposta: 80 },
-        { pergunta: "[4/5] Para uma olimpíada de matemática, 1.728 alunos foram separados em 36 salas com a mesma quantidade. Quantos alunos ficaram por sala?", resposta: 48 },
-        { pergunta: "[5/5] O estoque tem 4.500 folhas de cartolina para dividir de forma igual entre os 25 professores da instituição. Quantas folhas cada um ganhou?", resposta: 180 }
+    lanchonete: [
+        { pergunta: "[1/3] Lucas foi à lanchonete e comprou 3 salgados por R$ 6,00 cada e 2 sucos por R$ 5,00 cada. Para pagar a conta, ele entregou uma nota de R$ 50,00 na caixa. Quanto Lucas deve receber de troco?", resposta: 22 },
+        { pergunta: "[2/3] Um grupo de 4 amigos foi lanchar e pediu um combo de sobremesas que custou R$ 48,00 no total. Eles decidiram dividir o valor da conta igualmente entre os 4. Um dos amigos pagou a sua parte usando uma nota de R$ 20,00. Quanto esse amigo recebeu de troco?", resposta: 8 },
+        { pergunta: "[3/3] Uma lanchonete vende mini pães de queijo em pacotes. Um pacote com 5 unidades custa R$ 15,00. Mariana queria comprar apenas 3 mini pães de queijo para o seu lanche. Sabendo que Mariana também comprou uma vitamina por R$ 9,00 e pagou o total com uma nota de R$ 20,00, qual foi o valor do troco recebido por ela?", resposta: 2 }
     ],
 
-    porcentagem: [
-        { pergunta: "[1/5] O custo total de uma excursão escolar era de R$ 250,00, mas o CIEP conseguiu um patrocínio com 35% de desconto. Qual o valor do desconto?", resposta: 87.5 },
-        { pergunta: "[2/5] Dos 800 alunos matriculados no CIEP, 15% fazem parte do coral da escola. Quantos alunos participam do coral?", resposta: 120 },
-        { pergunta: "[3/5] Um notebook para o laboratório custava R$ 2.400,00 e teve um reajuste (aumento) de 12%. Qual foi o valor do aumento em reais?", resposta: 288 },
-        { pergunta: "[4/5] Em uma avaliação diagnóstica com 300 questões respondidas no total da rede, 65% foram acertadas pelos estudantes. Quantas acertos houve?", resposta: 195 },
-        { pergunta: "[5/5] Uma blusa do uniforme do CIEP custava R$ 85,00 e foi vendida com 20% de desconto na liquidação. Qual foi o valor do desconto?", resposta: 17 }
+    farmacia: [
+        { pergunta: "[1/3] Pedro foi à farmácia comprar suprimentos para seu kit de primeiros socorros. Ele comprou 3 caixas de curativos por R$ 8,00 cada e 2 frascos de soro fisiológico por R$ 6,00 cada. Para pagar a compra, Pedro entregou uma nota de R$ 50,00 na caixa. Quanto ele recebeu de troco?", resposta: 14 },
+        { pergunta: "[2/3] Um grupo de 3 amigos foi à farmácia comprar um protetor solar familiar para usar no fim da semana. O produto custava R$ 57,00 e eles dividiram esse valor igualmente entre os três. Um dos amigos pagou a sua parte entregando uma nota de R$ 20,00. Qual foi o valor do troco recebido por esse amigo?", resposta: 1 },
+        { pergunta: "[3/3] Lucas precisa tomar um suplemento vitamínico durante uma semana. Na farmácia, uma caixa com 6 barrinhas de proteína custa R$ 30,00, mas é possível comprar as unidades avulsas pelo valor proporcional. Lucas decidiu comprar apenas 4 barrinhas e também um sabonete líquido de R$ 12,00. Se ele pagou a compra com uma nota de R$ 50,00, quanto recebeu de troco?", resposta: 18 }
     ]
 };
 
-const progressoComercios = { adicao: 0, subtracao: 0, multiplicacao: 0, divisao: 0, porcentagem: 0 };
+const progressoComercios = { mercado: 0, padaria: 0, roupas: 0, farmacia: 0, lanchonete: 0 };
 
 let pontuacao = 0;
 let vidas = 3;
@@ -89,31 +79,31 @@ const teclas = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight:
 // Posicionamento proporcional ao mapa 1800x1350
 const comercios = [
     {
-        id: 'mercado', nome: 'MERCADO', icone: '🛒', categoria: 'adicao',
+        id: 'mercado', nome: 'MERCADO', icone: '🛒', categoria: 'mercado',
         x: 120, y: 60, largura: 250, altura: 140,
         corParede: '#334155', corTelhado: '#1e293b', corToldo: '#0284c7', corPlaca: '#0f172a',
         terminal: { x: 225, y: 210, largura: 40, altura: 32 }
     },
     {
-        id: 'padaria', nome: 'PADARIA', icone: '🥖', categoria: 'subtracao',
+        id: 'padaria', nome: 'PADARIA', icone: '🥖', categoria: 'padaria',
         x: 1430, y: 60, largura: 250, altura: 140,
         corParede: '#78350f', corTelhado: '#451a03', corToldo: '#d97706', corPlaca: '#292524',
         terminal: { x: 1535, y: 210, largura: 40, altura: 32 }
     },
     {
-        id: 'roupas', nome: 'LOJA DE ROUPAS', icone: '👕', categoria: 'porcentagem',
+        id: 'roupas', nome: 'LOJA DE ROUPAS', icone: '👕', categoria: 'roupas',
         x: 775, y: 550, largura: 250, altura: 140,
         corParede: '#6b21a8', corTelhado: '#581c87', corToldo: '#a855f7', corPlaca: '#3b0764',
         terminal: { x: 880, y: 700, largura: 40, altura: 32 }
     },
     {
-        id: 'farmacia', nome: 'FARMÁCIA', icone: '💊', categoria: 'divisao',
+        id: 'farmacia', nome: 'FARMÁCIA', icone: '💊', categoria: 'farmacia',
         x: 120, y: 1020, largura: 250, altura: 140,
         corParede: '#0f766e', corTelhado: '#115e59', corToldo: '#059669', corPlaca: '#064e3b',
         terminal: { x: 225, y: 1170, largura: 40, altura: 32 }
     },
     {
-        id: 'lanchonete', nome: 'LANCHONETE', icone: '🍔', categoria: 'multiplicacao',
+        id: 'lanchonete', nome: 'LANCHONETE', icone: '🍔', categoria: 'lanchonete',
         x: 1430, y: 1020, largura: 250, altura: 140,
         corParede: '#9f1239', corTelhado: '#881337', corToldo: '#dc2626', corPlaca: '#450a0a',
         terminal: { x: 1535, y: 1170, largura: 40, altura: 32 }
@@ -276,7 +266,7 @@ function abrirDesafio(loja) {
     const listaPerguntas = BANCO_DE_PERGUNTAS[comercioAtualCategoria];
 
     if (indice >= listaPerguntas.length) {
-        alert(`Parabéns! Você já respondeu todas as 5 perguntas de ${loja.nome}.`);
+        alert(`Parabéns! Você já respondeu todas as 3 perguntas do estabelecimento: ${loja.nome}.`);
         return;
     }
 
@@ -293,6 +283,26 @@ function abrirDesafio(loja) {
 btnResponder?.addEventListener('click', validarResposta);
 respostaInput?.addEventListener('keypress', (e) => { if (e.key === 'Enter') validarResposta(); });
 
+// =========================================================================
+// 🏆 VERIFICAÇÃO DE CONCLUSÃO DO JOGO
+// =========================================================================
+function verificarConclusaoJogo() {
+    const totalRespondidas = Object.values(progressoComercios).reduce((acc, curr) => acc + curr, 0);
+    // 5 comércios x 3 perguntas = 15 perguntas no total
+    if (totalRespondidas >= 15) {
+        setTimeout(() => {
+            alert(
+                `🎉 PARABÉNS! VOCÊ COMPLETOU TODOS OS DESAFIOS! 🎉\n\n` +
+                `📊 SEU DESEMPENHO FINAL:\n` +
+                `• Pontuação Total: ${pontuacao} pontos\n` +
+                `• Vidas Restantes: ${vidas}/3 ❤️\n\n` +
+                `Você é um verdadeiro mestre da matemática no MAT RUSH!`
+            );
+            document.location.reload();
+        }, 500);
+    }
+}
+
 function validarResposta() {
     const val = parseFloat(respostaInput.value);
     if (isNaN(val)) return;
@@ -303,7 +313,10 @@ function validarResposta() {
         mensagemFeedback.style.color = '#22c55e';
         mensagemFeedback.textContent = 'Correto! +10 pontos';
         progressoComercios[comercioAtualCategoria]++;
-        setTimeout(() => fecharModalEAfastar(), 800);
+        setTimeout(() => {
+            fecharModalEAfastar();
+            verificarConclusaoJogo();
+        }, 800);
     } else {
         vidas--;
         atualizarVidas();
