@@ -2,33 +2,83 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAT-RUSH</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>MAT RUSH - Aventura Matemática</title>
+    <!-- CSS Externo -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- TELA INICIAL (MENU) -->
-    <div id="tela-inicial" class="tela">
-        <h1 class="titulo-jogo">MAT-RUSH</h1>
-        <p class="subtitulo">Aventuras na Cidade: Explore a zona urbana e resolva os desafios!</p>
-        <button id="btn-jogar" class="botao-principal">JOGAR</button>
-    </div>
+    <!-- TELA INICIAL -->
+    <div id="tela-inicial">
+        <div class="conteudo-inicio">
+            <div class="logo-container">
+                <div class="titulo-mat">MAT</div>
+                <div class="titulo-rush">RUSH</div>
+            </div>
+            
+            <div class="subtitulo-jogo">Aventura Matemática • CIEP Marlene Abib</div>
 
-    <!-- TELA DO JOGO 2D -->
-    <div id="tela-jogo" class="escondido">
-        <!-- PAINEL DE STATUS FIXO -->
-        <div id="painel-hud">
-            <div>Pontos: <span id="pontuacao">0</span></div>
-            <div>Vidas: <span id="vidas">❤️❤️❤️</span></div>
+            <button id="btn-jogar">
+                ▶ JOGAR
+            </button>
+
+            <div class="dev-box">
+                <div>DESENVOLVEDOR: <span>ADRYELL</span></div>
+                <div>COLABORADOR: <span>FILIPE</span></div>
+            </div>
         </div>
-
-        <!-- CANVAS COM TAMANHO DE JANELA ESTÁVEL -->
-        <canvas id="canvas-jogo" width="800" height="600"></canvas>
     </div>
 
-    <!-- SCRIPT PRINCIPAL DO JOGO -->
-    <script src="script.js"></script>
+    <!-- TELA DO JOGO -->
+    <div id="tela-jogo" class="escondido">
+        <div class="hud">
+            <div class="hud-item">Pontos: <span id="pontuacao">0</span></div>
+            <div class="hud-item">Vidas: <span id="vidas">❤️❤️❤️</span></div>
+        </div>
+        
+        <canvas id="canvas-jogo"></canvas>
 
+        <!-- CONTROLES TOUCH MOBILE -->
+        <div id="controles-touch">
+            <button id="btn-cima" class="btn-dpad">▲</button>
+            <button id="btn-esquerda" class="btn-dpad">◀</button>
+            <button id="btn-direita" class="btn-dpad">▶</button>
+            <button id="btn-baixo" class="btn-dpad">▼</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE DESAFIO MATEMÁTICO -->
+    <div id="modal-desafio" class="escondido">
+        <div class="modal-conteudo">
+            <h2 id="titulo-comercio">DESAFIO</h2>
+            <p id="enunciado-conta">Carregando pergunta...</p>
+            <input type="number" id="resposta-jogador" placeholder="Digite sua resposta" step="any" inputmode="decimal" autocomplete="off">
+            <div class="botoes-modal">
+                <button id="btn-responder" class="btn-modal">Responder</button>
+                <button id="btn-fechar" class="btn-modal">Sair</button>
+            </div>
+            <div id="mensagem-feedback"></div>
+        </div>
+    </div>
+
+    <!-- TELA DE PONTUAÇÃO FINAL -->
+    <div id="tela-pontuacao" class="escondido">
+        <div class="pontuacao-conteudo">
+            <h1 id="titulo-fim-jogo">FIM DE JOGO!</h1>
+            <p class="texto-pontuacao-final">Sua pontuação final:</p>
+            <div class="placar-final" id="pontos-finais">0</div>
+            
+            <div class="estatisticas-fim">
+                <p>Respostas Corretas: <span id="qtd-certas">0</span></p>
+                <p>Respostas Incorretas: <span id="qtd-erradas">0</span></p>
+            </div>
+
+            <button id="btn-reiniciar">🔄 JOGAR NOVAMENTE</button>
+        </div>
+    </div>
+
+    <!-- JS Externo -->
+    <script src="script.js"></script>
 </body>
 </html>
